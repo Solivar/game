@@ -1,0 +1,24 @@
+{
+  "name": "game",
+  "version": "1.0.0",
+  "description": "A JavaScript based game",
+  "main": "index.js",
+  "dependencies": {
+    "babel-loader": "^8.0.2",
+    "webpack": "^4.17.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Solivar/game.git"
+  },
+  "author": "Ivars Solovjovs",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Solivar/game/issues"
+  },
+  "homepage": "https://github.com/Solivar/game#readme"
+}
