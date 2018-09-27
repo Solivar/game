@@ -1,29 +1,26 @@
-import Platform from './Platform';
+import Platform from './classes/Platform';
+import Shape from './classes/Shape';
 
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
-var object = {};
-var objects = [];
-let platform = new Platform(canvas);
+const shapes = [];
+const platform = new Platform(canvas);
 
 window.addEventListener('keydown', keyboardPress, false);
 
 function initializeGame() {
-  object = {
-    x: 100,
-    y: 0,
-    width: 50,
-    height: 50,
-    fallSpeed: 1.5,
-    collided: false,
-  };
-
   // Rate limit game loop
   setInterval(gameLoop, 10);
 }
 
 function keyboardPress(event) {
   var code = event.keyCode;
+
+  if (code === 71) {
+    createShape();
+
+    return;
+  }
   platform.move(code);
 }
 
@@ -34,59 +31,51 @@ function movePlatform() {
   ctx.stroke();
 }
 
-function moveObjects() {
-  for (var i = 0; i < objects.length; i++) {
-    moveObject(objects[i]);
+function moveShapes() {
+  for (const shape of shapes) {
+    moveShape(shape);
   }
 }
 
-function moveObject(object) {
-  if (!object.collided) {
-    detectObjectCollision(object);
+function moveShape(shape) {
+  if (!shape.collided) {
+    detectShapeCollision(shape);
   }
 
-  if (object.collided) {
+  if (shape.collided) {
     // TODO: Add score and exp
-    // TODO: remove from objects array
+    // TODO: remove from shape array
     return;
   }
 
-  object.y += object.fallSpeed;
+  shape.y += shape.fallSpeed;
 
   ctx.beginPath();
-  ctx.rect(object.x, object.y, object.width, object.height);
+  ctx.rect(shape.x, shape.y, shape.width, shape.height);
   ctx.lineWidth = 2;
   ctx.stroke();
 }
 
-function detectObjectCollision(object) {
-  if (object.y + object.height === platform.y) {
-    if (object.x + object.width > platform.x &&
-      object.x + object.width < platform.x + platform.width + object.width) {
-      object.collided = true;
+function detectShapeCollision(shape) {
+  if (shape.y + shape.height === platform.y) {
+    if (shape.x + shape.width > platform.x &&
+      shape.x + shape.width < platform.x + platform.width + shape.width) {
+        shape.collided = true;
     }
   }
 }
 
-function createObject() {
-  var object = {
-    x: 0,
-    y: 0,
-    width: 50,
-    height: 50,
-    fallSpeed: 1.5,
-    collided: false,
-  };
+function createShape() {
+  const shape = new Shape();
+  shape.x = Math.floor(Math.random() * (canvas.width - shape.width)) + 1;
 
-  object.x = Math.floor(Math.random() * (canvas.width - object.width)) + 1
-
-  objects.push(object);
+  shapes.push(shape);
 }
 
 function gameLoop() {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
   movePlatform();
-  moveObjects();
+  moveShapes();
 }
 
 initializeGame();
