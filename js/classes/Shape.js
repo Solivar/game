@@ -8,10 +8,15 @@ export default class {
       width: 50,
       height: 50,
       fallSpeed: 1.5,
-      collided: false,
+      hasCollided: false,
+      shouldDelete: false,
       ...params,
     };
 
     Object.assign(this, shapeParams);
+  }
+
+  move() {
+    this.y += this.fallSpeed;
   }
 };
