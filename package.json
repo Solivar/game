@@ -14,8 +14,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "http-server",
-    "build": "webpack --config webpack.config.js",
-    "webpack": "webpack"
+    "watch": "webpack"
   },
   "repository": {
     "type": "git",
