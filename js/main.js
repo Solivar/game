@@ -1,22 +1,14 @@
+import Platform from './Platform';
+
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
-var platform = {};
 var object = {};
 var objects = [];
+let platform = new Platform(canvas);
 
 window.addEventListener('keydown', keyboardPress, false);
 
-
 function initializeGame() {
-  platform = {
-    width: 80,
-    height: 8,
-    y: canvas.height - 10,
-    x: 10,
-    lineWidth: 7,
-    moveSpeed: 10,
-  };
-
   object = {
     x: 100,
     y: 0,
@@ -32,20 +24,7 @@ function initializeGame() {
 
 function keyboardPress(event) {
   var code = event.keyCode;
-
-  if (code === 65 || code === 37) {
-    if (platform.x - platform.moveSpeed < 0) {
-      platform.x = 0;
-    } else {
-      platform.x -= platform.moveSpeed;
-    }
-  } else if (code === 68 || code === 39) {
-    if (platform.x + platform.moveSpeed > canvas.width - platform.width) {
-      platform.x = canvas.width - platform.width;
-    } else {
-      platform.x += platform.moveSpeed;
-    }
-  }
+  platform.move(code);
 }
 
 function movePlatform() {
