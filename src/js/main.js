@@ -81,11 +81,20 @@ function deleteShapes() {
   shapes = shapes.filter(shape => !shape.shouldDelete);
 }
 
+function decideOnShapeCreation() {
+  const number = Math.floor(Math.random() * 30000) + 1;
+
+  if (number <= 100) {
+    createShape();
+  }
+}
+
 function gameLoop() {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
   movePlatform();
   moveShapes();
   deleteShapes();
+  decideOnShapeCreation();
 }
 
 initializeGame();
