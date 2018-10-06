@@ -14,11 +14,13 @@
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.0",
     "webpack": "^4.20.2",
-    "webpack-cli": "^3.1.1"
+    "webpack-cli": "^3.1.1",
+    "webpack-dev-server": "^3.1.9",
+    "webpack-livereload-plugin": "^2.1.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "http-server",
+    "start": "webpack-dev-server --config=config/webpack.config.js --output-public-path=/build/",
     "watch": "webpack --config=config/webpack.config.js"
   },
   "repository": {
