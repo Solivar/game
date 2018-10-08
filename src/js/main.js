@@ -5,6 +5,7 @@ var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 let shapes = [];
 const platform = new Platform(canvas);
+let score = 0;
 
 window.addEventListener('keydown', keyboardPress, false);
 
@@ -47,7 +48,7 @@ function moveShapes() {
     }
 
     if (shape.hasCollided) {
-      // TODO: Add score and exp
+      score++;
       shape.shouldDelete = true;
       continue;
     }
@@ -89,8 +90,14 @@ function decideOnShapeCreation() {
   }
 }
 
+function updateScore() {
+  ctx.font = '24px Roboto, sans-serif';
+  ctx.fillText(score, canvas.width - 50, 34);
+}
+
 function gameLoop() {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+  updateScore();
   movePlatform();
   moveShapes();
   deleteShapes();
