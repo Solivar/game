@@ -6,6 +6,7 @@ var ctx = canvas.getContext('2d');
 let shapes = [];
 const platform = new Platform(canvas);
 let score = 0;
+let isPaused = false;
 
 window.addEventListener('keydown', keyboardPress, false);
 
@@ -17,17 +18,24 @@ function initializeGame() {
 function keyboardPress(event) {
   var code = event.keyCode;
 
-  if (code === 71) {
-    createShape();
+  switch(code) {
+    case 71: // G
+      createShape();
+      break;
 
-    return;
-  } else if(code === 72) {
-    console.log(shapes);
+    case 72: // H
+      console.log(shapes);
+      break;
 
-    return;
+    case 32: // Space
+      isPaused = !isPaused;
+      break;
+
+    default:
+      if (!isPaused) {
+        platform.move(code);
+      }
   }
-
-  platform.move(code);
 }
 
 function movePlatform() {
@@ -96,12 +104,18 @@ function updateScore() {
 }
 
 function gameLoop() {
-  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-  updateScore();
-  movePlatform();
-  moveShapes();
-  deleteShapes();
-  decideOnShapeCreation();
+  if (isPaused) {
+    ctx.font = '48px Roboto, sans-serif';
+    const text = 'Paused';
+    ctx.fillText(text, canvas.width / 2 - (ctx.measureText(text).width / 2), canvas.height / 2);
+  } else {
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+    updateScore();
+    movePlatform();
+    moveShapes();
+    deleteShapes();
+    decideOnShapeCreation();
+  }
 }
 
 initializeGame();
