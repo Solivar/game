@@ -40,7 +40,8 @@ function keyboardPress(event) {
 
 function movePlatform() {
   ctx.beginPath();
-  ctx.rect(platform.x, platform.y, platform.width, platform.height);
+  ctx.fillStyle = '#000000';
+  ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
   ctx.lineWidth = 0;
   ctx.stroke();
 }
@@ -64,9 +65,14 @@ function moveShapes() {
     shape.move();
 
     ctx.beginPath();
-    ctx.rect(shape.x, shape.y, shape.width, shape.height);
+    var gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    gradient.addColorStop("0", "yellow");
+    gradient.addColorStop("1.0" ,"red");
+    ctx.fillStyle = gradient;
+    ctx.fillRect(shape.x, shape.y, shape.width, shape.height);
+    ctx.strokeStyle = '#000000';
     ctx.lineWidth = 2;
-    ctx.stroke();
+    ctx.strokeRect(shape.x, shape.y, shape.width, shape.height);
   }
 }
 
@@ -100,16 +106,18 @@ function decideOnShapeCreation() {
 
 function updateScore() {
   ctx.font = '24px Roboto, sans-serif';
+  ctx.fillStyle = 'brown';
   ctx.fillText(score, canvas.width - 50, 34);
 }
 
 function gameLoop() {
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
   if (isPaused) {
     ctx.font = '48px Roboto, sans-serif';
     const text = 'Paused';
     ctx.fillText(text, canvas.width / 2 - (ctx.measureText(text).width / 2), canvas.height / 2);
   } else {
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
     updateScore();
     movePlatform();
     moveShapes();
