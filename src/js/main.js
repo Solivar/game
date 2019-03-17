@@ -1,42 +1,12 @@
 import Platform from './classes/Platform';
 import Shape from './classes/Shape';
 
-var canvas = document.getElementById('canvas');
-var ctx = canvas.getContext('2d');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
 let shapes = [];
 const platform = new Platform(canvas);
 let score = 0;
 let isPaused = false;
-
-window.addEventListener('keydown', keyboardPress, false);
-
-function initializeGame() {
-  // Rate limit game loop
-  setInterval(gameLoop, 10);
-}
-
-function keyboardPress(event) {
-  var code = event.keyCode;
-
-  switch(code) {
-    case 71: // G
-      createShape();
-      break;
-
-    case 72: // H
-      console.log(shapes);
-      break;
-
-    case 32: // Space
-      isPaused = !isPaused;
-      break;
-
-    default:
-      if (!isPaused) {
-        platform.move(code);
-      }
-  }
-}
 
 function movePlatform() {
   ctx.beginPath();
@@ -46,8 +16,20 @@ function movePlatform() {
   ctx.stroke();
 }
 
+
+function detectShapeCollision(shape) {
+  if (shape.y + shape.height === platform.y) {
+    if (shape.x + shape.width > platform.x
+      && shape.x + shape.width < platform.x + platform.width + shape.width
+    ) {
+      shape.hasCollided = true;
+    }
+  }
+}
+
+
 function moveShapes() {
-  for (const shape of shapes) {
+  shapes.forEach((shape) => {
     if (shape.y > canvas.height) {
       shape.shouldDelete = true;
     }
@@ -59,31 +41,22 @@ function moveShapes() {
     if (shape.hasCollided) {
       score++;
       shape.shouldDelete = true;
-      continue;
     }
 
     shape.move();
 
     ctx.beginPath();
-    var gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-    gradient.addColorStop("0", "yellow");
-    gradient.addColorStop("1.0" ,"red");
+    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    gradient.addColorStop(0, 'yellow');
+    gradient.addColorStop(1, 'red');
     ctx.fillStyle = gradient;
     ctx.fillRect(shape.x, shape.y, shape.width, shape.height);
     ctx.strokeStyle = '#000000';
     ctx.lineWidth = 2;
     ctx.strokeRect(shape.x, shape.y, shape.width, shape.height);
-  }
+  });
 }
 
-function detectShapeCollision(shape) {
-  if (shape.y + shape.height === platform.y) {
-    if (shape.x + shape.width > platform.x &&
-      shape.x + shape.width < platform.x + platform.width + shape.width) {
-        shape.hasCollided = true;
-    }
-  }
-}
 
 function createShape() {
   const shape = new Shape();
@@ -124,6 +97,36 @@ function gameLoop() {
     deleteShapes();
     decideOnShapeCreation();
   }
+}
+
+function keyboardPress(event) {
+  const code = event.keyCode;
+
+  switch (code) {
+    case 71: // G
+      createShape();
+      break;
+
+    case 72: // H
+      console.log(shapes);
+      break;
+
+    case 32: // Space
+      isPaused = !isPaused;
+      break;
+
+    default:
+      if (!isPaused) {
+        platform.move(code);
+      }
+  }
+}
+
+window.addEventListener('keydown', keyboardPress, false);
+
+function initializeGame() {
+  // Rate limit game loop
+  setInterval(gameLoop, 10);
 }
 
 initializeGame();

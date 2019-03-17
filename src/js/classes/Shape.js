@@ -2,7 +2,7 @@ export default class {
   constructor(canvas, params) {
     this.canvas = canvas;
 
-    let shapeParams = {
+    const shapeParams = {
       x: 0,
       y: 0,
       width: 50,
@@ -19,4 +19,4 @@ export default class {
   move() {
     this.y += this.fallSpeed;
   }
-};
+}

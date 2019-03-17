@@ -2,7 +2,7 @@ export default class {
   constructor(canvas, params) {
     this.canvas = canvas;
 
-    let platformParams = {
+    const platformParams = {
       width: 80,
       height: 8,
       x: 10,
@@ -33,4 +33,4 @@ export default class {
       }
     }
   }
-};
+}
