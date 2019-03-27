@@ -9,6 +9,8 @@ let score = 0;
 let isPaused = false;
 
 function movePlatform() {
+  platform.getPosition();
+
   ctx.beginPath();
   ctx.fillStyle = '#000000';
   ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
@@ -117,13 +119,14 @@ function keyDownHandler(event) {
 
     default:
       if (!isPaused) {
-        platform.move(code);
+        platform.startMovement(code);
       }
   }
 }
 
 function keyUpHandler(event) {
-  console.log(event);
+  const { code } = event;
+  platform.stopMovement(code);
 }
 
 window.addEventListener('keydown', keyDownHandler, false);
