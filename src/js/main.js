@@ -99,19 +99,19 @@ function gameLoop() {
   }
 }
 
-function keyboardPress(event) {
-  const code = event.keyCode;
+function keyDownHandler(event) {
+  const { code } = event;
 
   switch (code) {
-    case 71: // G
+    case 'KeyG': // G
       createShape();
       break;
 
-    case 72: // H
+    case 'KeyH': // H
       console.log(shapes);
       break;
 
-    case 32: // Space
+    case 'Space': // Space
       isPaused = !isPaused;
       break;
 
@@ -122,11 +122,16 @@ function keyboardPress(event) {
   }
 }
 
-window.addEventListener('keydown', keyboardPress, false);
+function keyUpHandler(event) {
+  console.log(event);
+}
+
+window.addEventListener('keydown', keyDownHandler, false);
+window.addEventListener('keyup', keyUpHandler, false);
 
 function initializeGame() {
   // Rate limit game loop
-  setInterval(gameLoop, 10);
+  setInterval(gameLoop, 1000 / 60);
 }
 
 initializeGame();

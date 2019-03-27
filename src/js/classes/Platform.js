@@ -17,7 +17,7 @@ export default class {
 
   move(keyCode) {
     // Go left
-    if (keyCode === 65 || keyCode === 37) {
+    if (keyCode === 'KeyA' || keyCode === 'ArrowLeft') {
       if (this.x - this.moveSpeed < 0) {
         this.x = 0;
       } else {
@@ -25,7 +25,7 @@ export default class {
       }
 
     // Go right
-    } else if (keyCode === 68 || keyCode === 39) {
+    } else if (keyCode === 'KeyD' || keyCode === 'ArrowRight') {
       if (this.x + this.moveSpeed > this.canvas.width - this.width) {
         this.x = this.canvas.width - this.width;
       } else {
