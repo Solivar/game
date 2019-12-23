@@ -1,12 +1,12 @@
 import Platform from './classes/Platform';
 import Shape from './classes/Shape';
+import Game from './classes/Game';
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 let shapes = [];
-const platform = new Platform(canvas);
-let score = 0;
-let isPaused = false;
+const game = new Game();
+const platform = new Platform();
 
 function movePlatform() {
   platform.getPosition();
@@ -41,7 +41,7 @@ function moveShapes() {
     }
 
     if (shape.hasCollided) {
-      score++;
+      game.score++;
       shape.shouldDelete = true;
     }
 
@@ -79,16 +79,27 @@ function decideOnShapeCreation() {
   }
 }
 
+
 function updateScore() {
   ctx.font = '24px Roboto, sans-serif';
   ctx.fillStyle = 'brown';
-  ctx.fillText(score, canvas.width - 50, 34);
+  ctx.fillText(game.score, canvas.width - 50, 34);
 }
+
+
+function toggleMenuVisibility() {
+  game.isMenuVisible = !game.isMenuVisible;
+
+  const menuElement = document.getElementById('menu');
+
+  menuElement.classList.toggle('hidden');
+}
+
 
 function gameLoop() {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-  if (isPaused) {
+  if (game.isPaused) {
     ctx.font = '48px Roboto, sans-serif';
     const text = 'Paused';
     ctx.fillText(text, canvas.width / 2 - (ctx.measureText(text).width / 2), canvas.height / 2);
@@ -100,6 +111,7 @@ function gameLoop() {
     decideOnShapeCreation();
   }
 }
+
 
 function keyDownHandler(event) {
   const { code } = event;
@@ -114,11 +126,15 @@ function keyDownHandler(event) {
       break;
 
     case 'Space': // Space
-      isPaused = !isPaused;
+      game.isPaused = !game.isPaused;
+      break;
+
+    case 'Escape':
+      toggleMenuVisibility();
       break;
 
     default:
-      if (!isPaused) {
+      if (!game.isPaused) {
         platform.startMovement(code);
       }
   }

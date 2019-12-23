@@ -1,8 +1,47 @@
 body {
   font-family: 'Roboto', sans-serif;
+  margin: 10px;
 }
 
 #canvas {
   border: 2px solid rgb(0, 0, 0);
   background-color: rgb(255, 241, 178);
+}
+
+.menu {
+  border: 5px solid rgba(#000000, 0.1);
+  background-color: rgba(#00b7ff, 0.45);
+  width: 250px;
+  min-height: 100px;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: absolute;
+  left: calc(600px / 2 - 250px / 2 + 10px);
+  top: calc(600px / 2 - 150px / 2 + 10px);
+
+  button {
+    padding: 5px 10px;
+    text-align: center;
+    border: 1px solid white;
+    border-radius: 7px;
+    color: white;
+    outline: none;
+    font: inherit;
+    background-color: transparent;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 10px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.hidden {
+  display: none;
 }

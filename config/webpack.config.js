@@ -7,11 +7,11 @@ module.exports = {
   entry: ['./src/js/main.js', './src/scss/styles.scss'],
   output: {
     path: path.resolve(__dirname, '../build'),
-    filename: 'main.bundle.js'
+    filename: 'main.bundle.js',
   },
   devServer: {
     compress: true,
-    port: 9000
+    port: 9000,
   },
   module: {
     rules: [
@@ -19,23 +19,23 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader'
-        }
+          loader: 'babel-loader',
+        },
       },
       {
         test: /\.scss$/,
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',
-          'sass-loader'
-        ]
-      }
-    ]
+          'sass-loader',
+        ],
+      },
+    ],
   },
   plugins: [
     new MiniCssExtractPlugin({
-        filename: '[name].css',
-        chunkFilename: '[id].css'
-    })
-]
+      filename: '[name].css',
+      chunkFilename: '[id].css',
+    }),
+  ],
 };

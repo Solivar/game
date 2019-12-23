@@ -1,12 +1,12 @@
 export default class {
-  constructor(canvas, params) {
-    this.canvas = canvas;
+  constructor(params) {
+    this.canvas = document.getElementById('canvas');
 
     const platformParams = {
       width: 80,
       height: 8,
       x: 10,
-      y: canvas.height - 10,
+      y: this.canvas.height - 10,
       lineWidth: 7,
       moveSpeed: 10,
       velocity: {
@@ -33,8 +33,6 @@ export default class {
   stopMovement(keyCode) {
     if (keyCode === 'KeyA' || keyCode === 'ArrowLeft') {
       this.velocity.left = 0;
-
-    // Go right
     } else if (keyCode === 'KeyD' || keyCode === 'ArrowRight') {
       this.velocity.right = 0;
     }
