@@ -10,6 +10,7 @@ export default class {
       fallSpeed: 1.5,
       hasCollided: false,
       shouldDelete: false,
+      damage: 10,
       ...params,
     };
 

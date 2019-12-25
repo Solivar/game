@@ -34,6 +34,7 @@ function moveShapes() {
   shapes.forEach((shape) => {
     if (shape.y > canvas.height) {
       shape.shouldDelete = true;
+      platform.takeDamage(shape.damage);
     }
 
     if (!shape.hasCollided) {
@@ -80,6 +81,18 @@ function decideOnShapeCreation() {
 }
 
 
+function drawHealthBar() {
+  const healthPercentage = platform.health.current / platform.health.max;
+  ctx.beginPath();
+  ctx.rect(20, 20, 150, 20);
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(20, 20, 150, 20);
+  ctx.fillStyle = '#ff1414';
+  ctx.fillRect(20, 20, 150 * healthPercentage, 20);
+  ctx.stroke();
+}
+
+
 function updateScore() {
   ctx.font = '24px Roboto, sans-serif';
   ctx.fillStyle = 'brown';
@@ -107,6 +120,7 @@ function gameLoop() {
     updateScore();
     movePlatform();
     moveShapes();
+    drawHealthBar();
     deleteShapes();
     decideOnShapeCreation();
   }

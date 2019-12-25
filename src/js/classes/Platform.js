@@ -3,6 +3,10 @@ export default class {
     this.canvas = document.getElementById('canvas');
 
     const platformParams = {
+      health: {
+        max: 100,
+        current: 100,
+      },
       width: 80,
       height: 8,
       x: 10,
@@ -45,6 +49,14 @@ export default class {
       this.x = this.canvas.width - this.width;
     } else if (this.x < 0) {
       this.x = 0;
+    }
+  }
+
+  takeDamage(damage) {
+    this.health.current -= damage;
+
+    if (this.health.current < 0) {
+      this.health.current = 0;
     }
   }
 }
