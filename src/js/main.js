@@ -1,4 +1,5 @@
 import Platform from './classes/Platform';
+import Circle from './classes/Circle';
 import Shape from './classes/Shape';
 import Game from './classes/Game';
 
@@ -47,25 +48,19 @@ function moveShapes() {
     }
 
     shape.move();
-
-    ctx.beginPath();
-    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-    gradient.addColorStop(0, 'yellow');
-    gradient.addColorStop(1, 'red');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(shape.x, shape.y, shape.width, shape.height);
-    ctx.strokeStyle = '#000000';
-    ctx.lineWidth = 2;
-    ctx.strokeRect(shape.x, shape.y, shape.width, shape.height);
+    shape.draw();
   });
 }
 
 
 function createShape() {
   const shape = new Shape();
+  const circle = new Circle();
   shape.x = Math.floor(Math.random() * (canvas.width - shape.width)) + 1;
+  circle.x = Math.floor(Math.random() * (canvas.width - shape.width)) + 1;
 
   shapes.push(shape);
+  shapes.push(circle);
 }
 
 function deleteShapes() {
