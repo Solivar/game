@@ -33,4 +33,14 @@ export default class {
     this.ctx.lineWidth = 2;
     this.ctx.strokeRect(this.x, this.y, this.width, this.height);
   }
+
+  detectCollision(platform) {
+    if (this.y + this.height === platform.y) {
+      if (this.x + this.width > platform.x
+        && this.x + this.width < platform.x + platform.width + this.width
+      ) {
+        this.hasCollided = true;
+      }
+    }
+  }
 }

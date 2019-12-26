@@ -21,13 +21,7 @@ function movePlatform() {
 
 
 function detectShapeCollision(shape) {
-  if (shape.y + shape.height === platform.y) {
-    if (shape.x + shape.width > platform.x
-      && shape.x + shape.width < platform.x + platform.width + shape.width
-    ) {
-      shape.hasCollided = true;
-    }
-  }
+  shape.detectCollision(platform);
 }
 
 
