@@ -9,11 +9,16 @@
     <link href="./build/main.css" rel="stylesheet">
 </head>
 <body>
-    <canvas id="canvas" width="600" height="600"></canvas>
+    <div class="wrapper">
+        <canvas id="canvas" width="600" height="600"></canvas>
 
-    <div id="menu" class="menu hidden">
-        <button type="button">Start game</button>
-        <button type="button">Settings</button>
+        <div id="menu" class="menu">
+            <button id="start-button" type="button">Start game</button>
+        </div>
+
+        <div id="pause" class="menu hidden">
+            <button id="quit-button" type="button">Quit game</button>
+        </div>
     </div>
 
     <script src="./build/main.bundle.js"></script>

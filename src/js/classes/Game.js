@@ -5,11 +5,20 @@ export default class {
 
     const gameParams = {
       isPaused: false,
-      isMenuVisible: false,
+      isMenuVisible: true,
       score: 0,
+      state: 'menu',
       ...params,
     };
 
     Object.assign(this, gameParams);
+  }
+
+  togglePause() {
+    this.isPaused = !this.isPaused;
+
+    const pauseElement = document.getElementById('pause');
+
+    pauseElement.classList.toggle('hidden');
   }
 }

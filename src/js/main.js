@@ -6,8 +6,9 @@ import Game from './classes/Game';
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 let shapes = [];
-const game = new Game();
-const platform = new Platform();
+let game;
+let platform;
+let interval;
 
 function movePlatform() {
   platform.getPosition();
@@ -97,43 +98,75 @@ function toggleMenuVisibility() {
   menuElement.classList.toggle('hidden');
 }
 
+function drawPauseMenu() {
+  ctx.font = '48px Roboto, sans-serif';
+  const text = 'Paused';
+  ctx.fillText('Paused', canvas.width / 2 - (ctx.measureText(text).width / 2), canvas.height / 2 - 100);
+}
+
+function drawGameLevel() {
+  updateScore();
+  movePlatform();
+  moveShapes();
+  drawHealthBar();
+  deleteShapes();
+  decideOnShapeCreation();
+}
+
+function clearCanvas() {
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+}
 
 function gameLoop() {
-  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
   if (game.isPaused) {
-    ctx.font = '48px Roboto, sans-serif';
-    const text = 'Paused';
-    ctx.fillText(text, canvas.width / 2 - (ctx.measureText(text).width / 2), canvas.height / 2);
+    drawPauseMenu();
   } else {
-    updateScore();
-    movePlatform();
-    moveShapes();
-    drawHealthBar();
-    deleteShapes();
-    decideOnShapeCreation();
+    clearCanvas();
+    drawGameLevel();
   }
 }
 
+function initializeGame() {
+  // Rate limit game loop
+  game = new Game();
+  platform = new Platform();
+  interval = setInterval(gameLoop, 1000 / 60);
+}
+
+function startGame() {
+  initializeGame();
+  toggleMenuVisibility();
+}
+
+function stopGame() {
+  game.togglePause();
+  clearCanvas();
+  toggleMenuVisibility();
+  clearInterval(interval);
+}
 
 function keyDownHandler(event) {
+  if (game.isMenuVisible) {
+    return;
+  }
+
   const { code } = event;
 
   switch (code) {
-    case 'KeyG': // G
+    case 'KeyG':
       createShape();
       break;
 
-    case 'KeyH': // H
+    case 'KeyH':
       console.log(shapes);
       break;
 
-    case 'Space': // Space
-      game.isPaused = !game.isPaused;
+    case 'Space':
+      game.togglePause();
       break;
 
     case 'Escape':
-      toggleMenuVisibility();
+      game.togglePause();
       break;
 
     default:
@@ -150,10 +183,6 @@ function keyUpHandler(event) {
 
 window.addEventListener('keydown', keyDownHandler, false);
 window.addEventListener('keyup', keyUpHandler, false);
+document.getElementById('start-button').addEventListener('click', startGame);
+document.getElementById('quit-button').addEventListener('click', stopGame);
 
-function initializeGame() {
-  // Rate limit game loop
-  setInterval(gameLoop, 1000 / 60);
-}
-
-initializeGame();

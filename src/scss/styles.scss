@@ -1,11 +1,25 @@
+$canvas-width: 600px;
+$canvas-height: $canvas-width;
+
+$menu-width: 250px;
+$menu-height: 100px;
+
 body {
   font-family: 'Roboto', sans-serif;
   margin: 10px;
 }
 
 #canvas {
-  border: 2px solid rgb(0, 0, 0);
   background-color: rgb(255, 241, 178);
+}
+
+.wrapper {
+  position: relative;
+  border: 2px solid rgb(0, 0, 0);
+  width: $canvas-width;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .menu {
@@ -20,8 +34,8 @@ body {
   align-items: center;
   flex-direction: column;
   position: absolute;
-  left: calc(600px / 2 - 250px / 2 + 10px);
-  top: calc(600px / 2 - 150px / 2 + 10px);
+  left: calc(#{$canvas-width} / 2 - #{$menu-width} / 2);
+  top: calc(#{$canvas-height} / 2 - #{$menu-height} / 2);
 
   button {
     padding: 5px 10px;
