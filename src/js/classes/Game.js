@@ -8,6 +8,7 @@ export default class {
       isMenuVisible: true,
       score: 0,
       state: 'menu',
+      shapes: [],
       ...params,
     };
 

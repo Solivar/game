@@ -5,7 +5,6 @@ import Game from './classes/Game';
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-let shapes = [];
 let game;
 let platform;
 let interval;
@@ -27,7 +26,7 @@ function detectShapeCollision(shape) {
 
 
 function moveShapes() {
-  shapes.forEach((shape) => {
+  game.shapes.forEach((shape) => {
     if (shape.y > canvas.height) {
       shape.shouldDelete = true;
       platform.takeDamage(shape.damage);
@@ -54,12 +53,12 @@ function createShape() {
   shape.x = Math.floor(Math.random() * (canvas.width - shape.width)) + 1;
   circle.x = Math.floor(Math.random() * (canvas.width - shape.width)) + 1;
 
-  shapes.push(shape);
-  shapes.push(circle);
+  game.shapes.push(shape);
+  game.shapes.push(circle);
 }
 
 function deleteShapes() {
-  shapes = shapes.filter(shape => !shape.shouldDelete);
+  game.shapes = shapes.filter(shape => !shape.shouldDelete);
 }
 
 function decideOnShapeCreation() {
@@ -158,7 +157,7 @@ function keyDownHandler(event) {
       break;
 
     case 'KeyH':
-      console.log(shapes);
+      console.log(game.shapes);
       break;
 
     case 'Space':
