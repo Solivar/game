@@ -13,6 +13,7 @@ module.exports = {
     compress: true,
     port: 9000,
   },
+  devtool: 'source-map',
   module: {
     rules: [
       {
@@ -20,6 +21,9 @@ module.exports = {
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
+          query: {
+            retainLines: true,
+          },
         },
       },
       {

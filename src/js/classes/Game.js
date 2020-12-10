@@ -5,9 +5,8 @@ export default class {
 
     const gameParams = {
       isPaused: false,
-      isMenuVisible: true,
+      isOver: false,
       score: 0,
-      state: 'menu',
       shapes: [],
       ...params,
     };

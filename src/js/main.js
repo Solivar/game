@@ -2,6 +2,7 @@ import Platform from './classes/Platform';
 import Circle from './classes/Circle';
 import Shape from './classes/Shape';
 import Game from './classes/Game';
+import * as MenuManager from './menus';
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -19,11 +20,9 @@ function movePlatform() {
   ctx.stroke();
 }
 
-
 function detectShapeCollision(shape) {
   shape.detectCollision(platform);
 }
-
 
 function moveShapes() {
   game.shapes.forEach((shape) => {
@@ -46,7 +45,6 @@ function moveShapes() {
   });
 }
 
-
 function createShape() {
   const shape = new Shape();
   const circle = new Circle();
@@ -58,7 +56,7 @@ function createShape() {
 }
 
 function deleteShapes() {
-  game.shapes = shapes.filter(shape => !shape.shouldDelete);
+  game.shapes = game.shapes.filter(shape => !shape.shouldDelete);
 }
 
 function decideOnShapeCreation() {
@@ -68,7 +66,6 @@ function decideOnShapeCreation() {
     createShape();
   }
 }
-
 
 function drawHealthBar() {
   const healthPercentage = platform.health.current / platform.health.max;
@@ -81,29 +78,18 @@ function drawHealthBar() {
   ctx.stroke();
 }
 
-
 function updateScore() {
   ctx.font = '24px Roboto, sans-serif';
   ctx.fillStyle = 'brown';
   ctx.fillText(game.score, canvas.width - 50, 34);
 }
 
-
-function toggleMenuVisibility() {
-  game.isMenuVisible = !game.isMenuVisible;
-
-  const menuElement = document.getElementById('menu');
-
-  menuElement.classList.toggle('hidden');
-}
-
-function drawPauseMenu() {
-  ctx.font = '48px Roboto, sans-serif';
-  const text = 'Paused';
-  ctx.fillText('Paused', canvas.width / 2 - (ctx.measureText(text).width / 2), canvas.height / 2 - 100);
-}
-
 function drawGameLevel() {
+  if (!platform.health.current && !game.isOver) {
+    game.isOver = true;
+    MenuManager.showGameOverMenu();
+  }
+
   updateScore();
   movePlatform();
   moveShapes();
@@ -118,34 +104,43 @@ function clearCanvas() {
 
 function gameLoop() {
   if (game.isPaused) {
-    drawPauseMenu();
+    MenuManager.drawMenu(ctx, canvas, 'Paused');
+  } else if (game.isOver) {
+    MenuManager.drawMenu(ctx, canvas, 'Game Over');
   } else {
     clearCanvas();
     drawGameLevel();
   }
 }
 
+function stopGame() {
+  clearInterval(interval);
+  game = null;
+  platform = null;
+  clearCanvas();
+  MenuManager.toggleMainMenu();
+  MenuManager.hidePauseMenu();
+  MenuManager.hideGameOverMenu();
+}
+
 function initializeGame() {
-  // Rate limit game loop
+  if (game) {
+    stopGame();
+  }
+
   game = new Game();
   platform = new Platform();
+  // Rate limit game loop
   interval = setInterval(gameLoop, 1000 / 60);
 }
 
 function startGame() {
+  MenuManager.toggleMainMenu();
   initializeGame();
-  toggleMenuVisibility();
-}
-
-function stopGame() {
-  game.togglePause();
-  clearCanvas();
-  toggleMenuVisibility();
-  clearInterval(interval);
 }
 
 function keyDownHandler(event) {
-  if (game.isMenuVisible) {
+  if (!game) {
     return;
   }
 
@@ -176,12 +171,19 @@ function keyDownHandler(event) {
 }
 
 function keyUpHandler(event) {
+  if (!game) {
+    return;
+  }
+
   const { code } = event;
   platform.stopMovement(code);
 }
 
 window.addEventListener('keydown', keyDownHandler, false);
 window.addEventListener('keyup', keyUpHandler, false);
-document.getElementById('start-button').addEventListener('click', startGame);
-document.getElementById('quit-button').addEventListener('click', stopGame);
 
+const startGameButtons = document.getElementsByClassName('start-button');
+const quitGameButtons = document.getElementsByClassName('quit-button');
+
+Array.from(startGameButtons).forEach(button => button.addEventListener('click', startGame));
+Array.from(quitGameButtons).forEach(button => button.addEventListener('click', stopGame));
