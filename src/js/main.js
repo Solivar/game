@@ -48,9 +48,9 @@ function moveShapes() {
 }
 
 function createShape() {
-  const random = Math.floor(Math.random() * 2);
+  const random = Math.floor((Math.random() * 2) + 1);
 
-  if (random) {
+  if (random === 2) {
     const shape = new Shape();
 
     shape.x = Math.floor(Math.random() * (canvas.width - shape.width)) + 1;
@@ -60,6 +60,8 @@ function createShape() {
     const circle = new Circle();
 
     circle.x = Math.floor(Math.random() * (canvas.width - circle.width)) + 1;
+
+    console.log(circle);
     game.shapes.push(circle);
   }
 }

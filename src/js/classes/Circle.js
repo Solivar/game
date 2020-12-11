@@ -9,7 +9,7 @@ class Circle extends Shape {
     gradient.addColorStop(0, '#00ddff');
     gradient.addColorStop(1, '#00ff91');
     this.ctx.fillStyle = gradient;
-    this.ctx.arc(this.x + radius, this.y + radius, radius, 0, 2 * Math.PI);
+    this.ctx.arc(this.x, this.y, radius, 0, 2 * Math.PI);
     this.ctx.fill();
     this.ctx.strokeStyle = '#000000';
     this.ctx.lineWidth = 2;
@@ -19,6 +19,7 @@ class Circle extends Shape {
   detectCollision(platform) {
     let platformCollidingEdgeX = this.x;
     let platformCollidingEdgeY = this.y;
+    const radius = this.width / 2;
 
     if (this.x < platform.x) {
       platformCollidingEdgeX = platform.x;
@@ -37,7 +38,7 @@ class Circle extends Shape {
 
     const distance = Math.sqrt((changeInX ** 2) + (changeInY ** 2));
 
-    if (distance <= this.width / 2) {
+    if (distance <= radius) {
       this.hasCollided = true;
     }
   }
