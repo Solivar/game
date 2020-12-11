@@ -9,6 +9,8 @@ const ctx = canvas.getContext('2d');
 let game;
 let platform;
 let interval;
+let gameStartTime = null;
+let lastShapeTime = null;
 
 function movePlatform() {
   platform.getPosition();
@@ -46,13 +48,20 @@ function moveShapes() {
 }
 
 function createShape() {
-  const shape = new Shape();
-  const circle = new Circle();
-  shape.x = Math.floor(Math.random() * (canvas.width - shape.width)) + 1;
-  circle.x = Math.floor(Math.random() * (canvas.width - shape.width)) + 1;
+  const random = Math.floor(Math.random() * 2);
 
-  game.shapes.push(shape);
-  game.shapes.push(circle);
+  if (random) {
+    const shape = new Shape();
+
+    shape.x = Math.floor(Math.random() * (canvas.width - shape.width)) + 1;
+
+    game.shapes.push(shape);
+  } else {
+    const circle = new Circle();
+
+    circle.x = Math.floor(Math.random() * (canvas.width - circle.width)) + 1;
+    game.shapes.push(circle);
+  }
 }
 
 function deleteShapes() {
@@ -60,11 +69,20 @@ function deleteShapes() {
 }
 
 function decideOnShapeCreation() {
-  const number = Math.floor(Math.random() * 30000) + 1;
+  const currentTimestamp = +new Date();
+  const timeBetweenSpawns = 3 * 1000;
 
-  if (number <= 100) {
-    createShape();
+  if (lastShapeTime && currentTimestamp - lastShapeTime < timeBetweenSpawns) {
+    return;
   }
+
+  if (currentTimestamp - gameStartTime < timeBetweenSpawns) {
+    return;
+  }
+
+  lastShapeTime = currentTimestamp;
+
+  createShape();
 }
 
 function drawHealthBar() {
@@ -117,6 +135,8 @@ function stopGame() {
   clearInterval(interval);
   game = null;
   platform = null;
+  gameStartTime = null;
+  lastShapeTime = null;
   clearCanvas();
   MenuManager.toggleMainMenu();
   MenuManager.hidePauseMenu();
@@ -130,6 +150,7 @@ function initializeGame() {
 
   game = new Game();
   platform = new Platform();
+  gameStartTime = new Date();
   // Rate limit game loop
   interval = setInterval(gameLoop, 1000 / 60);
 }
