@@ -61,7 +61,6 @@ function createShape() {
 
     circle.x = Math.floor(Math.random() * (canvas.width - circle.width)) + 1;
 
-    console.log(circle);
     game.shapes.push(circle);
   }
 }
