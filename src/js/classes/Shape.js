@@ -35,12 +35,11 @@ export default class {
   }
 
   detectCollision(platform) {
-    if (this.y + this.height === platform.y) {
-      if (this.x + this.width > platform.x
-        && this.x + this.width < platform.x + platform.width + this.width
-      ) {
-        this.hasCollided = true;
-      }
+    if (this.x < platform.x + platform.width
+      && this.x + this.width > platform.x
+      && this.y < platform.y + platform.height
+      && this.y + this.height > platform.y) {
+      this.hasCollided = true;
     }
   }
 }

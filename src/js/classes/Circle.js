@@ -15,6 +15,32 @@ class Circle extends Shape {
     this.ctx.lineWidth = 2;
     this.ctx.stroke();
   }
+
+  detectCollision(platform) {
+    let platformCollidingEdgeX = this.x;
+    let platformCollidingEdgeY = this.y;
+
+    if (this.x < platform.x) {
+      platformCollidingEdgeX = platform.x;
+    } else if (this.x > platform.x + platform.width) {
+      platformCollidingEdgeX = platform.x + platform.width;
+    }
+
+    if (this.y < platform.y) {
+      platformCollidingEdgeY = platform.y;
+    } else if (this.y > platform.y + platform.height) {
+      platformCollidingEdgeY = platform.y + platform.height;
+    }
+
+    const changeInX = this.x - platformCollidingEdgeX;
+    const changeInY = this.y - platformCollidingEdgeY;
+
+    const distance = Math.sqrt((changeInX ** 2) + (changeInY ** 2));
+
+    if (distance <= this.width / 2) {
+      this.hasCollided = true;
+    }
+  }
 }
 
 export default Circle;
